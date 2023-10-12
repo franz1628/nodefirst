@@ -1,29 +1,40 @@
 const { response, request } = require('express');
+const bcryptjs = require('bcryptjs');
+
+const Usuario = require('../models/usuario');
+const { validationResult } = require('express-validator');
 
 
-const usuariosGet = (req = request, res = response) => {
+const usuariosGet = async (req = request, res = response) => {
 
-    const { q, nombre = 'No name', apikey, page = 1, limit } = req.query;
+
+    const usuarios = await Usuario.find();
 
     res.json({
-        msg: 'get API - controlador',
-        q,
-        nombre,
-        apikey,
-        page, 
-        limit
+        usuarios
     });
 }
 
-const usuariosPost = (req, res = response) => {
+const usuariosPost = async (req, res = response) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json(errors);
+    }
 
-    const { nombre, edad } = req.body;
+    const {name, email,password,role} = req.body;
+    const usuario = new Usuario({name, email,password,role});
 
-    res.json({
-        msg: 'post API - usuariosPost',
-        nombre, 
-        edad
-    });
+
+
+    const salt = bcryptjs.genSaltSync();
+    usuario.password = bcryptjs.hashSync(password,salt);
+
+
+    await usuario.save();
+
+    
+
+    res.json(usuario);
 }
 
 const usuariosPut = (req, res = response) => {
