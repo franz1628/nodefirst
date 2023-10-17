@@ -1,36 +1,43 @@
-const { Schema, model } = require("mongoose");
+
+const { Schema, model } = require('mongoose');
 
 const UsuarioSchema = Schema({
-  name: {
-    type: String,
-    required: [true, "The name is required"],
-  },
-  email : {
-    type: String,
-    required: [true, "The email is required"],
-    unique : true
-  },
-  password : {
-    type: String,
-    required: [true, "The password is required"],
-    unique : true
-  },
-  img : {
-    type: String
-  },
-  role : {
-    type: String,
-    required: [true, "The email is required"],
-    enum : ['ADMIN_ROLE','USER_ROLE']
-  },
-  state : {
-    type: Boolean,
-    default:true
-  },
-  google : {
-    type: Boolean,
-    default:true
-  },
+    nombre: {
+        type: String,
+        required: [true, 'El nombre es obligatorio']
+    },
+    correo: {
+        type: String,
+        required: [true, 'El correo es obligatorio'],
+        unique: true
+    },
+    password: {
+        type: String,
+        required: [true, 'La contraseña es obligatoria'],
+    },
+    img: {
+        type: String,
+    },
+    rol: {
+        type: String,
+        required: true,
+        emun: ['ADMIN_ROLE', 'USER_ROLE']
+    },
+    estado: {
+        type: Boolean,
+        default: true
+    },
+    google: {
+        type: Boolean,
+        default: false
+    },
 });
 
-module.exports = model('Users', UsuarioSchema);
+
+
+UsuarioSchema.methods.toJSON = function() {
+    const { __v, password, ...usuario  } = this.toObject();
+    return usuario;
+}
+
+module.exports = model( 'Usuario', UsuarioSchema );
