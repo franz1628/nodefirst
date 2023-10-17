@@ -1,5 +1,6 @@
 const Role = require('../models/role');
 const Person = require('../models/person');
+const Brand = require('../models/brand');
 
 const isValidRole = async(role = '') => {
     const rolExists = await Role.findOne({ role });
@@ -23,11 +24,18 @@ const personExists = async( id ) => {
     }
 }
 
+const brandExists = async( id ) => {
+    const brandExists = await Brand.findById(id);
+    if ( !brandExists ) {
+        throw new Error(`Id Brand does not exist: ${ id }`);
+    }
+}
 
 
 module.exports = {
     isValidRole,
     emailExists,
-    personExists
+    personExists,
+    brandExists,
 }
 
