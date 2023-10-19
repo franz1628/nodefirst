@@ -9,7 +9,7 @@ const Brand = require('../models/brand');
 const brandGet = async(req = request, res = response) => {
 
     const { limite = 5, desde = 0 } = req.query;
-    const query = { estado: true };
+    const query = { state: true };
 
     const [ total, brand ] = await Promise.all([
         Brand.countDocuments(query),
