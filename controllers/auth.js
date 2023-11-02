@@ -2,7 +2,7 @@ const { response, request } = require('express');
 
 const Person = require('../models/person');
 const bcryptjs = require('bcryptjs');
-const { default: generarJWT } = require('../helpers/generar-jwt');
+const { generarJWT } = require('../helpers/generar-jwt');
 
 
 const authPost = async(req, res = response) => {
@@ -12,21 +12,21 @@ const authPost = async(req, res = response) => {
         //exists Email
         const person = await Person.findOne({email});
         if(!person){
-            res.status(400).json({
+            return res.status(400).json({
                 msg:'Email or Password are not valid'
             })
         }
 
         // Active Person
         if(!person.state){
-            res.status(400).json({
+            return res.status(400).json({
                 msg:'Person no valid'
             })
         }
 
         const validPassword = bcryptjs.compareSync(password, person.password);
         if(!validPassword){
-            res.status(400).json({
+            return res.status(400).json({
                 msg:'Password no valid'
             })
         }

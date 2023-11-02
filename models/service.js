@@ -1,7 +1,7 @@
 
 const { Schema, model } = require('mongoose');
 
-const BrandSchema = Schema({
+const ModelSchema = Schema({
     description: {
         type: String,
         required: [true, 'El description is required']
@@ -14,10 +14,10 @@ const BrandSchema = Schema({
 
 
 
-BrandSchema.methods.toJSON = function() {
-    const { __v,_id, ...brand  } = this.toObject();
-    brand.uid = _id;
-    return brand;
+ModelSchema.methods.toJSON = function() {
+    const { __v,_id, ...model  } = this.toObject();
+    model.uid = _id;
+    return model;
 }
 
-module.exports = model( 'Brand', BrandSchema );
+module.exports = model( 'Service', ModelSchema );

@@ -12,6 +12,8 @@ class Server {
         this.personPath = '/api/person';
         this.brandPath = '/api/brand';
         this.modelPath = '/api/model';
+        this.servicePath = '/api/service';
+        this.vehiclePath = '/api/vehicle';
 
         this.conectarDB();
 
@@ -39,6 +41,8 @@ class Server {
         this.app.use( this.brandPath, require('../routes/brand'));
         this.app.use( this.modelPath, require('../routes/model'));
         this.app.use( this.personPath, require('../routes/person'));
+        this.app.use( this.servicePath, require('../routes/service'));
+        this.app.use( this.vehiclePath, require('../routes/vehicle'));
     }
 
     listen() {

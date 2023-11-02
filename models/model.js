@@ -19,7 +19,8 @@ const ModelSchema = Schema({
 
 
 ModelSchema.methods.toJSON = function() {
-    const { __v, ...model  } = this.toObject();
+    const { __v,_id, ...model  } = this.toObject();
+    model.uid = _id;
     return model;
 }
 

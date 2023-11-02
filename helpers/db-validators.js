@@ -2,6 +2,7 @@ const Role = require('../models/role');
 const Person = require('../models/person');
 const Brand = require('../models/brand');
 const Model = require('../models/model');
+const Service = require('../models/service');
 
 const isValidRole = async(role = '') => {
     const rolExists = await Role.findOne({ role });
@@ -38,6 +39,13 @@ const modelExists = async( id ) => {
     }
 }
 
+const serviceExists = async( description ) => {
+    const model = await  Service.findOne({description});
+    if ( model ) {
+        throw new Error(`The description: ${ description }, is already registered`);
+    }
+}
+
 
 module.exports = {
     isValidRole,
@@ -45,5 +53,7 @@ module.exports = {
     personExists,
     brandExists,
     modelExists,
+    serviceExists,
+
 }
 

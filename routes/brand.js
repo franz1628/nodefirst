@@ -5,6 +5,7 @@ const { check } = require('express-validator');
 
 const { validFields } = require('../middlewares/valid-fields');
 const { brandExists } = require('../helpers/db-validators');
+const { validToken } = require('../middlewares/valid-token');
 
 const { brandGet,
         brandPut,
@@ -15,7 +16,7 @@ const { brandGet,
 const router = Router();
 
 
-router.get('/', brandGet );
+router.get('/',[validToken] ,brandGet );
 
 router.put('/:id',[
     check('id', 'It is not a valid ID').isMongoId(),
