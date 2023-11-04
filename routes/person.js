@@ -29,7 +29,7 @@ router.post('/',[
     check('password', 'The password must be more than 6 letters').isLength({ min: 6 }),
     check('email', 'The email is not valid').isEmail(),
     check('email').custom( emailExists ),
-    check('role').custom( isValidRole ), 
+    check('role').custom( isValidRole), 
     validFields
 ], personPost );
 

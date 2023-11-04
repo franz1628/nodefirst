@@ -11,19 +11,22 @@ const { modelGet,
         modelPost,
         modelDelete,
         modelPatch } = require('../controllers/model');
+const { validToken } = require('../middlewares/valid-token');
 
 const router = Router();
 
 
-router.get('/', modelGet );
+router.get('/', [validToken],modelGet );
 
 router.put('/:id',[
+    validToken,
     check('id', 'It is not a valid ID').isMongoId(),
     check('id').custom( modelExists ),
     validFields
 ],modelPut );
 
 router.post('/',[
+    validToken,
     check('idBrand', 'The idBrand is required').isMongoId(),
     check('idBrand').custom( brandExists),
     check('description', 'The description is required').not().isEmpty(),
@@ -31,6 +34,7 @@ router.post('/',[
 ], modelPost );
 
 router.delete('/:id',[
+    validToken,
     check('id', 'It is not a valid ID').isMongoId(),
     check('id').custom( modelExists ),
     validFields

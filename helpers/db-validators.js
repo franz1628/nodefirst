@@ -11,6 +11,7 @@ const isValidRole = async(role = '') => {
     }
 }
 
+
 const emailExists = async( email = '' ) => {
    
     const emailExists = await Person.findOne({ email });

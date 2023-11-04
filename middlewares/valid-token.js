@@ -1,8 +1,9 @@
 const {response,request} = require('express');
 const jwt = require("jsonwebtoken");
+const Person = require('../models/person.js');
 
 
-const validToken = (req = request, res = response,next ) => {
+const validToken = async (req = request, res = response,next ) => {
     const token = req.header('x-token');
     
     if(!token){
@@ -12,7 +13,28 @@ const validToken = (req = request, res = response,next ) => {
     }
 
     try {
-        jwt.verify(token, process.env.SECRETORPRIVATEKEY);
+        const {uid} = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
+        
+        const person = await Person.findById(uid);
+
+  
+
+        if(!person){
+            return res.status(401).json({
+                msg : 'token no valid - Person no exist in DB'
+            });
+        }
+
+        if(!person.state){
+            return res.status(401).json({
+                msg : 'token no valid - Person with status false'
+            });
+        }
+
+        req.person = person;
+        
+        next();
+      
     } catch (error) {
         return res.status(401).json({
             msg : 'token no valid'
@@ -20,7 +42,7 @@ const validToken = (req = request, res = response,next ) => {
     }
 
     
-    next();
+
 }
 
 module.exports = {

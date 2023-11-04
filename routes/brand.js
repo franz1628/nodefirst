@@ -2,10 +2,16 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-
-const { validFields } = require('../middlewares/valid-fields');
 const { brandExists } = require('../helpers/db-validators');
-const { validToken } = require('../middlewares/valid-token');
+const {
+    validFields,
+    haveRole,
+    validRole,
+    validToken,
+} = require('../middlewares')
+// const { validFields } = require('../middlewares/valid-fields');
+// const { validToken } = require('../middlewares/valid-token');
+// const { validRole, haveRole } = require('../middlewares/valid-role');
 
 const { brandGet,
         brandPut,
@@ -16,15 +22,20 @@ const { brandGet,
 const router = Router();
 
 
-router.get('/',[validToken] ,brandGet );
+router.get('/',[validToken,validRole] ,brandGet );
 
 router.put('/:id',[
+    validToken,
+    validRole,
     check('id', 'It is not a valid ID').isMongoId(),
     check('id').custom( brandExists ),
     validFields
 ],brandPut );
 
 router.post('/',[
+    validToken,
+    validRole,
+    haveRole('ADMIN_ROLE'),
     check('description', 'The description is required').not().isEmpty(),
     validFields
 ], brandPost );

@@ -7,7 +7,6 @@ const Brand = require('../models/brand');
 
 
 const brandGet = async(req = request, res = response) => {
-
     const { limite = 5, desde = 0 } = req.query;
     const query = { state: true };
 
@@ -28,6 +27,14 @@ const brandPost = async(req, res = response) => {
     
     const { description } = req.body;
     const brand = new Brand({ description });
+
+    const existBrand = await Brand.findOne({description:description});
+
+    if(existBrand){
+        return res.status(401).json({
+            msg : `The description ${description}  already exists`
+        })
+    }
 
     await brand.save();
 
