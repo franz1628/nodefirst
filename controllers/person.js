@@ -65,9 +65,7 @@ const personPatch = (req, res = response) => {
 
 const personDelete = async(req, res = response) => {
 
-    const { id } = req.params;
-
-    const person = await Person.findByIdAndUpdate( id, { estado: false } );
+    const person = await Person.findByIdAndUpdate( id, { state: false } );
 
 
     res.json(person);
